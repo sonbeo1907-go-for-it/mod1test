@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quan li sach</title>
+</head>
+<body>
+
+    <button id="btnNew">Thêm sách mới</button>
+    <button id="btnExisting">Thêm sách sẵn có</button>
+    <button id="btnBorrow">Mượn sách</button>
+
+    <br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mã số</th>
+                <th>Tên sách</th>
+                <th>Năm XB</th>
+                <th>Số quyển</th>
+                <th>Tình trạng</th>
+            </tr>
+        </thead>
+        <tbody id="bookTableBody"></tbody>
+    </table>
+
+    <script type="module">
+        import { myLibrary } from './manager.js';
+
+        const tbody = document.getElementById("bookTableBody");
+
+        function updateTable() {
+            tbody.innerHTML = "";
+            myLibrary.books.forEach(book => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${book.code}</td>
+                        <td>${book.name}</td>
+                        <td>${book.year}</td>
+                        <td>${book.number}</td>
+                        <td>${book.status ? "Còn sách" : "Hết sách"}</td>
+                    </tr>`;
+            });
+        }
+
+        document.getElementById("btnNew").addEventListener("click", () => {
+            if (myLibrary.addNewBook()) updateTable();
+        });
+
+        document.getElementById("btnExisting").addEventListener("click", () => {
+            if (myLibrary.addExistingBook()) updateTable();
+        });
+
+        document.getElementById("btnBorrow").addEventListener("click", () => {
+            if (myLibrary.borrowBook()) updateTable();
+        });
+    </script>
+</body>
+</html>
